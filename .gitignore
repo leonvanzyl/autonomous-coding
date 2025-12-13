@@ -1,0 +1,10 @@
+# Agent-generated output directories
+generations/
+
+# Log files
+logs/
+
+venv/
+.env
+__pycache__/
+*.pyc
