@@ -20,13 +20,13 @@ ALLOWED_COMMANDS = {
     "tail",
     "wc",
     "grep",
+    "eof",
     # File operations (agent uses SDK tools for most file ops, but cp/mkdir needed occasionally)
     "cp",
     "mkdir",
     "chmod",  # For making scripts executable; validated separately
     # Directory
     "pwd",
-    "cd",
     # Output
     "echo",
     # Node.js development
