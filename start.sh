@@ -8,7 +8,22 @@ echo "========================================"
 echo ""
 
 # Check if Claude CLI is installed
-if ! command -v claude &> /dev/null; then
+CLAUDE_CMD=""
+
+# First check if claude is already in PATH
+if command -v claude &> /dev/null; then
+    CLAUDE_CMD="claude"
+# Check common macOS installation path
+elif [ -x "$HOME/.claude/local/bin/claude" ]; then
+    CLAUDE_CMD="$HOME/.claude/local/bin/claude"
+    export PATH="$HOME/.claude/local/bin:$PATH"
+# Check Linux installation path
+elif [ -x "$HOME/.local/bin/claude" ]; then
+    CLAUDE_CMD="$HOME/.local/bin/claude"
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [ -z "$CLAUDE_CMD" ]; then
     echo "[ERROR] Claude CLI not found"
     echo ""
     echo "Please install Claude CLI first:"
@@ -18,7 +33,7 @@ if ! command -v claude &> /dev/null; then
     exit 1
 fi
 
-echo "[OK] Claude CLI found"
+echo "[OK] Claude CLI found at: $CLAUDE_CMD"
 
 # Check if user has credentials
 CLAUDE_CREDS="$HOME/.claude/.credentials.json"
@@ -37,7 +52,7 @@ else
         echo "Running 'claude login'..."
         echo "Complete the login in your browser, then return here."
         echo ""
-        claude login
+        $CLAUDE_CMD login
 
         # Check if login succeeded
         if [ -f "$CLAUDE_CREDS" ]; then
